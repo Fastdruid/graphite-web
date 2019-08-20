@@ -29,7 +29,6 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-
     - script: |
       displayName: Push to repository
         docker push $(dockerId).azurecr.io/$(imageName)
