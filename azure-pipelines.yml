@@ -10,6 +10,8 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  dockerId: acoragrafana
+  imageName: acoragrafite
 
 stages:
 - stage: Build
@@ -19,23 +21,17 @@ stages:
     displayName: Build
     pool:
       vmImage: 'ubuntu-latest'
-    steps:
+     steps:
     - task: Docker@2
-      displayName: Login to ACR
+      displayName: Build an image
       inputs:
-        command: login
-        containerRegistry: VisualStudioEnterprise
-    - task: Docker@2
-      displayName: Build an image and push it to Azure Repository Container
-      inputs:
-        command: buildAndPush
+        command: build
         dockerfile: '**/Dockerfile'
-        repository: acoragrafana
         tags: |
           $(tag)
 
-    - task: Docker@2
+    - script: |
       displayName: Logout of ACR
-      inputs:
-        command: logout
-        containerRegistry: VisualStudioEnterprise
+        docker push $(dockerId).azurecr.io/$(imageName)
+      env:
+        pswd: $(dockerPassword)        # Define dockerPassword in the Variables tab of this pipeline in Pipelines page of web interface
