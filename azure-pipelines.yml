@@ -31,7 +31,7 @@ stages:
           $(tag)
 
     - script: |
-      displayName: Logout of ACR
+      displayName: Push to repository
         docker push $(dockerId).azurecr.io/$(imageName)
       env:
         pswd: $(dockerPassword)        # Define dockerPassword in the Variables tab of this pipeline in Pipelines page of web interface
